@@ -27,4 +27,4 @@ submitted in this repo
 When this mode is activated, your pipeline should be showing all the stages that your code is
 going through
 
-##Instructions on How to run the code
+## Instructions on How to run the code
