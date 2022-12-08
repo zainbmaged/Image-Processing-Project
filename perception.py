@@ -24,8 +24,8 @@ def color_thresh(img, rgb_thresh=(160, 160, 160)):
 ## obstacles is tresholded with high values of RED & GREEN with less  BLUE (faint brown color is our treshold for obstacles) 
 def obstacles_tresh(img, obs_thresh=(120, 120, 90)):
     color_select = np.zeros_like(img[:,:,0])
-    obs = (img[:,:,0] > obs_thresh[0]) & (img[:,:,1] > obs_thresh[1]) & (img[:,:,2] < obs_thresh[2])
-    color_select[obs] = 1
+    obstacle = (img[:,:,0] > obs_thresh[0]) & (img[:,:,1] > obs_thresh[1]) & (img[:,:,2] < obs_thresh[2])
+    color_select[obstacle] = 1
     return color_select
 ## obstacles is tresholded with high values of RED & GREEN with less  BLUE (faint brown color is our treshold for obstacles) 
 def rock_tresh(img, yellow_thresh=(120, 120, 10)):
