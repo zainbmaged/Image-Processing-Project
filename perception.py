@@ -1,14 +1,18 @@
 import numpy as np
 import cv2
 
-# Identify pixels above the threshold
-# Threshold of RGB > 160 does a nice job of identifying ground pixels only
+##------------------------------------------------------------------------------------------------------------------(1)
+    # Identify pixels above the threshold
+    # Threshold of RGB > 160 does a nice job of identifying ground pixels only
 def color_thresh(img, rgb_thresh=(160, 160, 160)):
-    # Create an array of zeros same xy size as img, but single channel
+    
+    # Create an array of zeros same xy size as img, but single channe  
     color_select = np.zeros_like(img[:,:,0])
+    
     # Require that each pixel be above all three threshold values in RGB
     # above_thresh will now contain a boolean array with "True"
     # where threshold was met
+
     above_thresh = (img[:,:,0] > rgb_thresh[0]) \
                 & (img[:,:,1] > rgb_thresh[1]) \
                 & (img[:,:,2] > rgb_thresh[2])
@@ -17,6 +21,18 @@ def color_thresh(img, rgb_thresh=(160, 160, 160)):
     # Return the binary image
     return color_select
 
+def obstacles_tresh(img, obs_thresh=(120, 120, 90)):
+    color_select = np.zeros_like(img[:,:,0])
+    obs = (img[:,:,0] > obs_thresh[0]) & (img[:,:,1] > obs_thresh[1]) & (img[:,:,2] < obs_thresh[2])
+    color_select[obs] = 1
+    return color_select
+
+def rock_tresh(img, yellow_thresh=(120, 120, 10)):
+    color_select = np.zeros_like(img[:,:,0])
+    rock = (img[:,:,0] > yellow_thresh[0]) & (img[:,:,1] > yellow_thresh[1]) & (img[:,:,2] < yellow_thresh[2])
+    color_select[rock] = 1
+    return color_select
+##------------------------------------------------------------------------------------------------------------------(1)
 # Define a function to convert from image coords to rover coords
 def rover_coords(binary_img):
     # Identify nonzero pixels
