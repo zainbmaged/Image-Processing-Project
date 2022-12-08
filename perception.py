@@ -85,7 +85,7 @@ def pix_to_world(xpix, ypix, xpos, ypos, yaw, world_size, scale):
     y_pix_world = np.clip(np.int_(ypix_tran), 0, world_size - 1)
     # Return the result
     return x_pix_world, y_pix_world
-
+##------------------------------------------------------------------------------------------------------------------(5)
 # Define a function to perform a perspective transform
 def perspect_transform(img, src, dst):
            
@@ -97,6 +97,30 @@ def perspect_transform(img, src, dst):
 
 # Apply the above functions in succession and update the Rover state accordingly
 def perception_step(Rover):
+    # Perform perception steps to update Rover()
+    # TODO: 
+    # NOTE: camera image is coming to you in Rover.img
+    
+ # 1) Define source and destination points for perspective transform
+        # The destination box will be 2*dst_size on each side
+    dst_size = 5 # output image 5x5
+    # Set a bottom offset to account for the fact that the bottom of the image 
+    # is not the position of the rover but a bit in front of it
+    # this is just a rough guess, feel free to change it!
+    bottom_offset=6 
+    source = np.float32([[14, 140], [301 ,140],[200, 96], [118, 96]])# rough estimation
+    destination = np.float32([[Rover.img.shape[1]/2 - dst_size, Rover.img.shape[0] - bottom_offset],
+                      [Rover.img.shape[1]/2 + dst_size, Rover.img.shape[0] - bottom_offset],
+                      [Rover.img.shape[1]/2 + dst_size, Rover.img.shape[0] - 2*dst_size - bottom_offset], 
+                      [Rover.img.shape[1]/2 - dst_size, Rover.img.shape[0] - 2*dst_size - bottom_offset],
+                      ])
+    # 2) Apply perspective transform
+    warped = perspect_transform(Rover.img, source, destination)
+    thresh = color_thresh(warped)
+    
+    ##------------------------------------------------------------------------------------------------------------------(5)
+
+    
     # Perform perception steps to update Rover()
     # TODO: 
     # NOTE: camera image is coming to you in Rover.img
