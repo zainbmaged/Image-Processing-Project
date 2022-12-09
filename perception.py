@@ -56,7 +56,6 @@ def to_polar_coords(x_pixel, y_pixel):
     return dist, angles
 
 # Define a function to map rover space pixels to world space
-d# Define a function to map rover space pixels to world space
 def rotate_pix(xpix, ypix, yaw):
     # Convert yaw to radians
     yaw_rad = yaw * np.pi / 180
