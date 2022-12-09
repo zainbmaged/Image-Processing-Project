@@ -22,16 +22,17 @@ def color_thresh(img, rgb_thresh=(160, 160, 160)):
     # Return the binary image (only navigable train is set to one )
     return color_select
 ## obstacles is tresholded with high values of RED & GREEN with less  BLUE (faint brown color is our treshold for obstacles) 
-def obstacles_tresh(img, obs_thresh=(120, 120, 90)):
+def obstacles_tresh(img, obs_thresh=(210, 160, 121)):
     color_select = np.zeros_like(img[:,:,0])
-    obstacle = (img[:,:,0] > obs_thresh[0]) & (img[:,:,1] > obs_thresh[1]) & (img[:,:,2] < obs_thresh[2])
-    color_select[obstacle] = 1
-    return color_select
-## obstacles is tresholded with low values of RED & GREEN with lower BLUE (shadow yellow color is our treshold for rocks 
-def obstacles_tresh(img, obs_thresh=(153, 102, 51)):
-    color_select = np.zeros_like(img[:,:,0])
-    obs = (img[:,:,0] < obs_thresh[0]) & (img[:,:,1] < obs_thresh[1]) & (img[:,:,2] < obs_thresh[2])
+    obs = (img[:,:,0] <= obs_thresh[0]) & (img[:,:,1] <= obs_thresh[1]) & (img[:,:,2] <= obs_thresh[2])
     color_select[obs] = 1
+    return color_select
+## rocks are thresholded with high values of RED & GREEN with much less BLUE  90, 90, 30(shadowed yellow color is our threshold for rocks)
+
+def rock_tresh(img, yellow_thresh=(90, 90, 30)):
+    color_select = np.zeros_like(img[:,:,0])
+    rock = (img[:,:,0] > yellow_thresh[0]) & (img[:,:,1] > yellow_thresh[1]) & (img[:,:,2] < yellow_thresh[2])
+    color_select[rock] = 1
     return color_select
 ##------------------------------------------------------------------------------------------------------------------(1)
 # Define a function to convert from image coords to rover coords
