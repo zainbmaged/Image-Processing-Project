@@ -27,11 +27,11 @@ def obstacles_tresh(img, obs_thresh=(120, 120, 90)):
     obstacle = (img[:,:,0] > obs_thresh[0]) & (img[:,:,1] > obs_thresh[1]) & (img[:,:,2] < obs_thresh[2])
     color_select[obstacle] = 1
     return color_select
-## obstacles is tresholded with high values of RED & GREEN with less  BLUE (shadow yellow color is our treshold for rocks 
-def rock_tresh(img, yellow_thresh=(120, 120, 10)):
+## obstacles is tresholded with low values of RED & GREEN with lower BLUE (shadow yellow color is our treshold for rocks 
+def obstacles_tresh(img, obs_thresh=(153, 102, 51)):
     color_select = np.zeros_like(img[:,:,0])
-    rock = (img[:,:,0] > yellow_thresh[0]) & (img[:,:,1] > yellow_thresh[1]) & (img[:,:,2] < yellow_thresh[2])
-    color_select[rock] = 1
+    obs = (img[:,:,0] < obs_thresh[0]) & (img[:,:,1] < obs_thresh[1]) & (img[:,:,2] < obs_thresh[2])
+    color_select[obs] = 1
     return color_select
 ##------------------------------------------------------------------------------------------------------------------(1)
 # Define a function to convert from image coords to rover coords
