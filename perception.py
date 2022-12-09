@@ -128,8 +128,8 @@ def perception_step(Rover):
     obstacles = obstacles_tresh(warped)   
     
     Rover.vision_image[:,:,0] = thresh*200 #navigable train set to RED
-    Rover.vision_image[:,:,1] = obstacles_tresh(Rover.img) *200# obstacles Set to GREEN
-    Rover.vision_image[:,:,2] = rock_tresh(Rover.img)*200#Rocks set to BLUE
+    Rover.vision_image[:,:,1] = rocks *200# obstacles Set to GREEN
+    Rover.vision_image[:,:,2] = obstacles*200#Rocks set to BLUE
 
    ##------------------------------------------------------------------------------------------------------------------(1)
    ##------------------------------------------------------------------------------------------------------------------(4)
