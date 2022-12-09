@@ -73,6 +73,8 @@ def translate_pix(xpix_rot, ypix_rot, xpos, ypos, scale):
     return xpix_translated, ypix_translated
 
 
+##------------------------------------------------------------------------------------------------------------------(4)
+
 # Define a function to apply rotation and translation (and clipping)
 # Once you define the two functions above this function should work
 def pix_to_world(xpix, ypix, xpos, ypos, yaw, world_size, scale):
@@ -85,6 +87,7 @@ def pix_to_world(xpix, ypix, xpos, ypos, yaw, world_size, scale):
     y_pix_world = np.clip(np.int_(ypix_tran), 0, world_size - 1)
     # Return the result
     return x_pix_world, y_pix_world
+##------------------------------------------------------------------------------------------------------------------(4)
 ##------------------------------------------------------------------------------------------------------------------(5)
 # Define a function to perform a perspective transform
 def perspect_transform(img, src, dst):
@@ -129,7 +132,23 @@ def perception_step(Rover):
     Rover.vision_image[:,:,2] = rock_tresh(Rover.img)*200#Rocks set to BLUE
 
    ##------------------------------------------------------------------------------------------------------------------(1)
+   ##------------------------------------------------------------------------------------------------------------------(4)
+     # 7) Update Rover worldmap (to be displayed on right side of screen)    
+    worldmap = Rover.worldmap
+    scale = 25 
     
+    # 8) Convert rover-centric pixel positions to polar coordinates
+    obstacle_x_world, obstacle_y_world = pix_to_world(obxpix,obypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
+    rock_x_world, rock_y_world = pix_to_world(roxpix,roypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
+    navigable_x_world, navigable_y_world = pix_to_world(xpix,ypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
+    
+    
+    Rover.worldmap[obstacle_y_world, obstacle_x_world, 0] = 200 
+    Rover.worldmap[navigable_y_world, navigable_x_world, 0] = 0
+    Rover.worldmap[rock_y_world, rock_x_world, 1] = 200
+    Rover.worldmap[navigable_y_world, navigable_x_world, 2] = 200
+ ##------------------------------------------------------------------------------------------------------------------(4)
+        
     # Perform perception steps to update Rover()
     # TODO: 
     # NOTE: camera image is coming to you in Rover.img
