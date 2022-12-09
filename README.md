@@ -28,3 +28,10 @@ When this mode is activated, your pipeline should be showing all the stages that
 going through
 
 ## Instructions on How to run the code
+#  Autonomouse mode
+
+The file called drive_rover.py is what you will use to navigate the environment in autonomous mode. This script calls functions from within perception.py and decision.py. The functions defined in the IPython notebook are all included inperception.py and it's your job to fill in the function called perception_step() with the appropriate processing steps and update the rover map. decision.py includes another function called decision_step(), which includes an example of a conditional statement you could use to navigate autonomously. Here you should implement other conditionals to make driving decisions based on the rover's state and the results of the perception_step() analysis.
+
+drive_rover.py should work as is if you have all the required Python packages installed. Call it at the command line like this:
+
+python drive_rover.py
