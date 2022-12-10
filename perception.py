@@ -156,11 +156,24 @@ def perception_step(Rover):
     rocks = perspect_transform(rock_tresh(Rover.img), source, destination)
     obstacles = obstacles_tresh(warped)   
     
-    Rover.vision_image[:,:,2] = thresh*200 #navigable train set to Blue
-    Rover.vision_image[:,:,1] = rocks *200# obstacles Set to GREEN
-    Rover.vision_image[:,:,0] = obstacles*200#Rocks set to Red
-
+  
    ##------------------------------------------------------------------------------------------------------------------(1)
+##------------------------------------------------------------------------------------------------------------------(2)
+        
+   
+    # 4) Update Rover.vision_image (this will be displayed on right side of screen) our map is 200 x200 pixels
+     Rover.vision_image[:,:,0] = color_thresh(Rover.img)*200     #navigable train set to RED
+     Rover.vision_image[:,:,1] = obstacles_tresh(Rover.img) *200 #obstacles Set to GREEN
+     Rover.vision_image[:,:,2] = rock_tresh(Rover.img)*200       #Rocks set to BLUE
+    # 5) Convert map image pixel values to rover-centric coords
+    # Calculate pixel values in rover-centric coords and distance/angle to all pixels
+    xpix, ypix = rover_coords(thresh)
+    obxpix, obypix = rover_coords(obstacles)
+    roxpix, roypix = rover_coords(rocks)
+   
+    # 6) Convert rover-centric pixel values to world coordinates
+    dist, angles = to_polar_coords(xpix, ypix)
+##------------------------------------------------------------------------------------------------------------------(2)
    ##------------------------------------------------------------------------------------------------------------------(4)
      # 7) Update Rover worldmap (to be displayed on right side of screen)    
     worldmap = Rover.worldmap
