@@ -20,7 +20,7 @@ submitted below
 - A Jupiter-notebook showing the result of your pipeline on the provided test images:
 submitted in this repo
 - The output of your pipeline on the provided test videos:
-[ link ]
+[ link_video ] https://drive.google.com/file/d/10z-xtj51rIPM87QasjF9KGxAqLF4-Knu/view?usp=sharing
 - A report containing the methods used in the pipeline and explaining them in detail:
 [ link to report ] https://docs.google.com/document/d/1OUNwhvXxpj7jac4rH3VyrG8Wu1kkk7aooFBvtpSIKTg/edit?usp=sharing
 - Finally, your code should support a debugging mode whether it was a video or a single image.
