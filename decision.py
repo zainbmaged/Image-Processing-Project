@@ -19,10 +19,10 @@ def decision_step(Rover):
             
             # Check the extent of navigable terrain
             if len(Rover.nav_angles) >= Rover.stop_forward :
-                if Rover.steer > 14.5 and Rover.vel > 1.8:  
+                if Rover.steer > 14.5 and Rover.vel > 2:  
                     Rover.steer = 13
                     Rover.mode = 'stop'
-                if Rover.steer < -14.5 and Rover.vel > 1.8:  
+                if Rover.steer < -14.5 and Rover.vel > 2:  
                     Rover.steer = -13
                     Rover.mode = 'stop'
               
