@@ -63,26 +63,7 @@ def to_polar_coords(x_pixel, y_pixel):
     angles = np.arctan2(y_pixel, x_pixel)
     return dist, angles
 ##------------------------------------------------------------------------------------------------------------------(2)
-# Define a function to convert from image coords to rover coords
-def rover_coords(binary_img):
-    # Identify nonzero pixels
-    ypos, xpos = binary_img.nonzero()
-    # Calculate pixel positions with reference to the rover position being at the 
-    # center bottom of the image.  
-    x_pixel = -(ypos - binary_img.shape[0]).astype(np.float)
-    y_pixel = -(xpos - binary_img.shape[1]/2 ).astype(np.float)
-    return x_pixel, y_pixel
 
-
-# Define a function to convert to radial coords in rover space
-def to_polar_coords(x_pixel, y_pixel):
-    # Convert (x_pixel, y_pixel) to (distance, angle) 
-    # in polar coordinates in rover space
-    # Calculate distance to each pixel
-    dist = np.sqrt(x_pixel**2 + y_pixel**2)
-    # Calculate angle away from vertical for each pixel
-    angles = np.arctan2(y_pixel, x_pixel)
-    return dist, angles
 
 # Define a function to map rover space pixels to world space
 def rotate_pix(xpix, ypix, yaw):
