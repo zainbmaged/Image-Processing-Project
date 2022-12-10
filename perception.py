@@ -135,7 +135,8 @@ def perception_step(Rover):
    ##------------------------------------------------------------------------------------------------------------------(1)
     # 3) Apply color threshold to identify navigable terrain/obstacles/rock samples
     rocks = perspect_transform(rock_tresh(Rover.img), source, destination)
-    obstacles = obstacles_tresh(warped)   
+    obstacles = perspect_transform(obstacles_tresh(Rover.img), source, destination)   
+ 
     # 4) Update Rover.vision_image (this will be displayed on left side of screen) our image is 200 x200 pixels
     Rover.vision_image[:,:,2] = thresh*200 #navigable train set to Blue
     Rover.vision_image[:,:,1] = rocks *200# rocks Set to GREEN
@@ -163,11 +164,11 @@ def perception_step(Rover):
     rock_x_world, rock_y_world = pix_to_world(roxpix,roypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
     navigable_x_world, navigable_y_world = pix_to_world(xpix,ypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
      # 7) Update Rover worldmap (to be displayed on right side of screen)  
-      if ((Rover.pitch < 1 or Rover.pitch > 359) and (Rover.roll < 1 or Rover.roll > 359)):
-        Rover.worldmap[obstacle_y_world, obstacle_x_world, 0] = 200
-        Rover.worldmap[navigable_y_world, navigable_x_world, 0] = 0
-        Rover.worldmap[rock_y_world, rock_x_world, 1] = 200
-        Rover.worldmap[navigable_y_world, navigable_x_world, 2] = 200
+    if ((Rover.pitch < 1 or Rover.pitch > 359) and (Rover.roll < 1 or Rover.roll > 359)):
+          Rover.worldmap[obstacle_y_world, obstacle_x_world, 0] = 200
+          Rover.worldmap[navigable_y_world, navigable_x_world, 0] = 0
+          Rover.worldmap[rock_y_world, rock_x_world, 1] = 200
+          Rover.worldmap[navigable_y_world, navigable_x_world, 2] = 200
     ##------------------------------------------------------------------------------------------------------------------(4)
         
     
