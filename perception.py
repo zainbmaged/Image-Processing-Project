@@ -136,7 +136,7 @@ def perception_step(Rover):
     # 3) Apply color threshold to identify navigable terrain/obstacles/rock samples
     rocks = perspect_transform(rock_tresh(Rover.img), source, destination)
     obstacles = obstacles_tresh(warped)   
-    # 4) Update Rover.vision_image (this will be displayed on right side of screen) our map is 200 x200 pixels
+    # 4) Update Rover.vision_image (this will be displayed on left side of screen) our image is 200 x200 pixels
     Rover.vision_image[:,:,2] = thresh*200 #navigable train set to Blue
     Rover.vision_image[:,:,1] = rocks *200# rocks Set to GREEN
     Rover.vision_image[:,:,0] = obstacles*200#obstacles set to Red
