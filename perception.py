@@ -159,11 +159,11 @@ def perception_step(Rover):
     worldmap = Rover.worldmap
     scale = 25 
     
-   
+    #Convert rover pixel values (including rocks,obstacles ) to world coordinates 
     obstacle_x_world, obstacle_y_world = pix_to_world(obxpix,obypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
     rock_x_world, rock_y_world = pix_to_world(roxpix,roypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
     navigable_x_world, navigable_y_world = pix_to_world(xpix,ypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
-     # 7) Update Rover worldmap (to be displayed on right side of screen)  
+     # 7) Update Rover worldmap (to be displayed on right side of screen) depending on the following condition 
     if ((Rover.pitch < 1 or Rover.pitch > 359) and (Rover.roll < 1 or Rover.roll > 359)):
           Rover.worldmap[obstacle_y_world, obstacle_x_world, 0] = 200
           Rover.worldmap[navigable_y_world, navigable_x_world, 0] = 0
