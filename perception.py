@@ -5,7 +5,7 @@ import cv2
     # Identify pixels above the threshold
     # Threshold of RGB > 160 does a nice job of identifying ground pixels only
 ## navigable train is tresholded with high values of RED GREEN BLUE (grey color as image will be processed in single channel)    
-def color_thresh(img, rgb_thresh=(210, 160, 121)):
+def color_thresh(img, rgb_thresh=(160, 160, 160)):
     
     # Create an array of zeros same xy size as img, but single channe (z Represinting RGB is set to zero) 
     color_select = np.zeros_like(img[:,:,0])
@@ -22,9 +22,9 @@ def color_thresh(img, rgb_thresh=(210, 160, 121)):
     # Return the binary image
     return color_select
 
-def obstacles_tresh(img, obs_thresh=(210, 160, 121)):
+def obstacles_tresh(img, obs_thresh=(160, 160,160 )):
     color_select = np.zeros_like(img[:,:,0])
-    obs = (img[:,:,0] <= obs_thresh[0]) | (img[:,:,1] <= obs_thresh[1]) |(img[:,:,2] <= obs_thresh[2])
+    obs = (img[:,:,0] <= obs_thresh[0])| (img[:,:,1] <= obs_thresh[1]) | (img[:,:,2] <= obs_thresh[2])
     color_select[obs] = 1
     return color_select
 ## rocks are thresholded with high values of RED & GREEN with much less BLUE  90, 90, 30(shadowed yellow color is our threshold for rocks)
