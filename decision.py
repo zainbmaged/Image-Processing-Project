@@ -25,11 +25,7 @@ def decision_step(Rover):
                 if Rover.steer < -14.5 and Rover.vel > 1.8:  
                     Rover.steer = -13
                     Rover.mode = 'stop'
-                if  Rover.pos == intial_pos and Rover.steer > 14.5 and Rover.vel > 1.9:   
-                    Rover.steer = 13
-                    
-                if  Rover.pos == intial_pos or Rover.steer < -14.5 and Rover.vel > 1.9:
-                    Rover.steer = -13
+              
                     
                 # If mode is forward, navigable terrain looks good 
                 # and velocity is below max, then throttle 
