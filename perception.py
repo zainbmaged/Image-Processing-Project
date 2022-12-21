@@ -134,8 +134,8 @@ def perception_step(Rover):
    ##------------------------------------------------------------------------------------------------------------------(5)
    ##------------------------------------------------------------------------------------------------------------------(1)
     # 3) Apply color threshold to identify navigable terrain/obstacles/rock samples
-    rocks = perspect_transform(rock_tresh(Rover.img), source, destination)
-    obstacles = perspect_transform(obstacles_tresh(Rover.img), source, destination)   
+    rocks = rock_tresh(warped)
+    obstacles = obstacles_tresh(warped)   
  
     # 4) Update Rover.vision_image (this will be displayed on left side of screen) our image is 200 x200 pixels
     Rover.vision_image[:,:,2] = thresh*200 #navigable train set to Blue
@@ -151,19 +151,22 @@ def perception_step(Rover):
     xpix, ypix = rover_coords(thresh)
     obxpix, obypix = rover_coords(obstacles)
     roxpix, roypix = rover_coords(rocks)
-
-    dist, angles = to_polar_coords(xpix, ypix)
+    if(roxpix.all()!=0 and roypix.all() !=0):
+      
+      dist, angles = to_polar_coords( xpix, ypix)
+    else:
+      dist, angles = to_polar_coords( roxpix, roypix)
    ##------------------------------------------------------------------------------------------------------------------(2)
    ##------------------------------------------------------------------------------------------------------------------(4)
     # 6) Convert rover-centric pixel values to world coordinates 
     worldmap = Rover.worldmap
     scale = 25 
     
-    #Convert rover pixel values (including rocks,obstacles ) to world coordinates 
+   
     obstacle_x_world, obstacle_y_world = pix_to_world(obxpix,obypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
     rock_x_world, rock_y_world = pix_to_world(roxpix,roypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
     navigable_x_world, navigable_y_world = pix_to_world(xpix,ypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
-     # 7) Update Rover worldmap (to be displayed on right side of screen) depending on the following condition 
+     # 7) Update Rover worldmap (to be displayed on right side of screen)  
     if ((Rover.pitch < 1 or Rover.pitch > 359) and (Rover.roll < 1 or Rover.roll > 359)):
           Rover.worldmap[obstacle_y_world, obstacle_x_world, 0] = 200
           Rover.worldmap[navigable_y_world, navigable_x_world, 0] = 0
