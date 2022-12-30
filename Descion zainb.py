@@ -26,10 +26,6 @@ def decision_step(Rover):
             ##check that rover is not looping around itself
                 
                 if Rover.steer > 14.5 and Rover.vel > 2: 
-                    if loop_flag==0 or loop_flag==1:
-                      loop_flag+=1
-                    if loop_flag ==2:
-                      loop_flag=0
                       Rover.steer = 13
                       Rover.mode = 'stop'
                 if Rover.steer < -14.5 and Rover.vel > 2:  
