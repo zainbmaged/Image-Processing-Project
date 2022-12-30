@@ -24,30 +24,8 @@ def color_thresh(img, rgb_thresh=(160, 160, 160)):
 
 def obstacles_tresh(img, obs_thresh=(160, 160,160 )):
     color_select = np.zeros_like(img[:,:,0])
-    obs = (img[:,:,0] < obs_thresh[0]) \
-                & (img[:,:,1] < obs_thresh[1]) \
-                & (img[:,:,2] < obs_thresh[2])
+    obs = (img[:,:,0] <= obs_thresh[0])| (img[:,:,1] <= obs_thresh[1]) | (img[:,:,2] <= obs_thresh[2])
     color_select[obs] = 1
-    dst_size = 5 
-    bottom_offset = 6
-    source = np.float32([[14, 140], [301 ,140],[200, 96], [118, 96]])# rough estimation
-    destination = np.float32([[Rover.img.shape[1]/2 - dst_size, Rover.img.shape[0] - bottom_offset],
-                      [Rover.img.shape[1]/2 + dst_size, Rover.img.shape[0] - bottom_offset],
-                      [Rover.img.shape[1]/2 + dst_size, Rover.img.shape[0] - 2*dst_size - bottom_offset], 
-                      [Rover.img.shape[1]/2 - dst_size, Rover.img.shape[0] - 2*dst_size - bottom_offset],
-                      ])
-    
-    #changed
-    blank = np.zeros((160,320,3),dtype=np.uint8)
-    #variable to numbers
-    blank.fill(255)
-    warped2=perspect_transform(blank, source, destination)
-    rgb_thresh=(160, 160, 160)
-    blackpart=(warped2[:,:,0] < obs_thresh[0]) \
-                & (warped2[:,:,1] < obs_thresh[1]) \
-                & (warped2[:,:,2] < obs_thresh[2])
-
-    obstacle_select[blackpart] = 0
     return color_select
 ## rocks are thresholded with high values of RED & GREEN with much less BLUE  90, 90, 30(shadowed yellow color is our threshold for rocks)
 
@@ -172,12 +150,12 @@ def perception_step(Rover):
     # Calculate pixel values in rover-centric coords and distance/angle to all pixels
     xpix, ypix = rover_coords(thresh)
     obxpix, obypix = rover_coords(obstacles)
-    #roxpix, roypix = rover_coords(rocks)
-    #if(roxpix.all()!=0 and roypix.all() !=0):
+    roxpix, roypix = rover_coords(rocks)
+  
       
-     # dist, angles = to_polar_coords( xpix, ypix)
-    #else:
-     # dist, angles = to_polar_coords( roxpix, roypix)
+    dist, angles = to_polar_coords( xpix, ypix)
+   
+    
    ##------------------------------------------------------------------------------------------------------------------(2)
    ##------------------------------------------------------------------------------------------------------------------(4)
     # 6) Convert rover-centric pixel values to world coordinates 
@@ -186,7 +164,7 @@ def perception_step(Rover):
     
    
     obstacle_x_world, obstacle_y_world = pix_to_world(obxpix,obypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
-    #rock_x_world, rock_y_world = pix_to_world(roxpix,roypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
+    rock_x_world, rock_y_world = pix_to_world(roxpix,roypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
     navigable_x_world, navigable_y_world = pix_to_world(xpix,ypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
      # 7) Update Rover worldmap (to be displayed on right side of screen)  
     if ((Rover.pitch < 1 or Rover.pitch > 359) and (Rover.roll < 1 or Rover.roll > 359)):
@@ -196,28 +174,22 @@ def perception_step(Rover):
           Rover.worldmap[navigable_y_world, navigable_x_world, 2] = 200
     ##------------------------------------------------------------------------------------------------------------------(4)
         
-    
-    xpix, ypix = rover_coords(rocks)
-    if len(xpix) != 0:
+    if len(roxpix) != 0:
         Rover.samples_insight = 1
-        rock=np.zeros((len(xpix),2))
-        rock_x_world, rock_y_world = pix_to_world(roxpix,roypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)     
-        Rover.worldmap[rock_y_world, rock_x_world, 1] = 200
+        rock=np.zeros((len(roxpix),2))
+      
     else:
         Rover.samples_insight = 0
 
     if Rover.samples_insight == 1:
-        xpix, ypix = rover_coords(rocks)
-        distrock, angles = to_polar_coords(xpix, ypix)
-        dist, angles = to_polar_coords(xpix, ypix)
+       
+        distrock, angles = to_polar_coords(roxpix, roypix)
+        dist, angles = to_polar_coords(roxpix, roypix)
         Rover.rock_angle = angles
         Rover.rock_dist = dist
-        
-#update polar coordinate
-    xpix, ypix = rover_coords(threshed[0])
-    dist, angles = to_polar_coords(xpix, ypix)
-    Rover.nav_dist = dist
-    Rover.nav_angles = angles
-  
     
-    return 
+    # 8) Convert rover-centric pixel positions to polar coordinates
+    Rover.nav_dists = dist
+    Rover.nav_angles = angles
+    
+    return Rover
