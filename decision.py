@@ -39,12 +39,13 @@ def decision_step(Rover):
             ##check that rover is not looping around itself
                 
                 if Rover.steer > 14.5 and Rover.vel > 2: 
-                      Rover.steer = 13
-                      Rover.mode = 'stop'
+                    Rover.brake = Rover.brake_set
+                    Rover.steer = 15
+                    Rover.mode = 'stop'  
                 if Rover.steer < -14.5 and Rover.vel > 2:  
-                    Rover.steer = -13
+                    Rover.brake = Rover.brake_set
+                    Rover.steer =-15
                     Rover.mode = 'stop'
-              
               
                     
                 # If mode is forward, navigable terrain looks good 
@@ -98,10 +99,10 @@ def decision_step(Rover):
                     # Release the brake
                     Rover.brake = 0
                     # Set steer to mean angle
-                    Rover.steer = np.clip(np.mean(Rover.nav_angles * 180/np.pi) + -12, -15, 15)
+                    Rover.steer = np.clip(np.mean(Rover.nav_angles * 180/np.pi) + -10, -15, 15)
                     Rover.mode = 'forward'
         elif Rover.mode == 'stuck':
-            Rover.brake = 0
+            Rover.brake = Rover.brake_set
             Rover.throttle = 0
             Rover.steer = -15
             Rover.mode = 'forward'
