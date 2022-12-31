@@ -177,9 +177,12 @@ def perception_step(Rover):
    
     ## for finding rocks   
     distrock, anglesro = to_polar_coords(roxpix, roypix)
-        
+    ## obstacles angles
+    distob, anglesob = to_polar_coords(obxpix, obypix )
     Rover.rock_angle = anglesro
     Rover.rock_dist = distrock
+    Rover.ob_angle = anglesob
+    Rover.ob_dist = distob
     
     # 8) Convert rover-centric pixel positions to polar coordinates
     Rover.nav_dists = dist
