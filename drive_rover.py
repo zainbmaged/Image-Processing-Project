@@ -82,7 +82,7 @@ class RoverState():
         self.stuck_count = 0 # count the time in one place
         self.rock_angle = None # rock angles
         self.rock_dist = None
-        s
+        
 # Initialize our rover 
 Rover = RoverState()
 
