@@ -32,8 +32,8 @@ def decision_step(Rover):
           
         if Rover.mode == 'sampling':
             if Rover.vel != 0:
-                Rover.brake = 10
-                if len(Rover.samples_dists) == 0:
+                Rover.brake = 0
+                if len(Rover.nav_dists) == 0:
                     Rover.mode = 'forward'
                     
         elif Rover.mode == 'stuck' and len(Rover.rock_dist) == 0:
@@ -42,16 +42,16 @@ def decision_step(Rover):
             Rover.steer = -15
             Rover.throttle = 0
             Rover.brake = 0
-            if Rover.nav_area > 650:
+            if Rover.nav_area > 65:
                 Rover.mode = 'forward'
         # Check for Rover.mode status
         elif Rover.mode == 'forward': 
-            if 650 > Rover.nav_area > 10:
+            if 65 > Rover.nav_area > 10:
                 Rover.throttle = 0
                 Rover.brake = 10
                 Rover.steer = 0
                 Rover.mode = 'stuck'
-            if len(Rover.rock_dist) > 0 and np.min(Rover.rock_dist) < (5 * Rover.vel):
+            if len(Rover.nav_dists) > 0 and np.min(Rover.nav_dists) < (5 * Rover.vel):
                 Rover.mode = 'sampling'
                 Rover.throttle = 0
                 Rover.brake = 10
@@ -61,19 +61,27 @@ def decision_step(Rover):
 				# Except for start, if stopped means stuck.
 				# Alternates between stuck and forward modes
                 if len(Rover.rock_angle) > 0:
-                    drive_angles = Rover.samples_angles
-                    drive_distance = np.min(Rover.samples_dists)
+                    drive_angles = Rover.rock_angle
+                    drive_distance = np.min(Rover.rock_dist)
                 else:
                     drive_angles = Rover.nav_angles
                     drive_distance = Rover.dist_to_obstacle
 
 					# Set throttle value to throttle setting
-                Rover.throttle = np.clip(drive_distance * 0.005 - Rover.vel * 0.8, 0, 2)
+                Rover.throttle = np.clip(drive_distance *0.05 - Rover.vel * 0.2, 0,1)
                 Rover.brake = 0
 				# Set steering to average angle clipped to the range +/- 15
                 Rover.steer = np.clip(np.mean(drive_angles * 180 / np.pi), -15, 15)
 				# Hug left wall by setting the steer angle slightly to the left
 				# Rover.steer = np.clip(np.mean((Rover.nav_angles + offset) * 180 / np.pi), -15, 15)
+			# If there's a lack of navigable terrain pixels then go to 'stop' mode
+            elif len(Rover.nav_angles) < Rover.stop_forward :
+                    # Set mode to "stop" and hit the brakes!
+                    Rover.throttle = 0
+                    # Set brake to stored brake value
+                    Rover.brake = Rover.brake_set
+                    Rover.steer = 0
+                    Rover.mode = 'stop'
 
 			# If there's a lack of navigable terrain pixels then go to 'stop' mod
 			# If we're already in "stuck". Stay here for 1 sec
