@@ -34,6 +34,13 @@ def rock_tresh(img, yellow_thresh=(90, 90, 30)):
     rock = (img[:,:,0] > yellow_thresh[0]) & (img[:,:,1] > yellow_thresh[1]) & (img[:,:,2] < yellow_thresh[2])
     color_select[rock] = 1
     return color_select
+    
+    
+    # Apply the above functions in succession
+def calc_forward_dist(path_dists, path_angles):
+	abs_angles = np.absolute(path_angles / sum(path_angles))
+	idx = np.abs(abs_angles).argmin()
+	return path_dists[idx]
 ##------------------------------------------------------------------------------------------------------------------(1)
 ##------------------------------------------------------------------------------------------------------------------(2)
 # Define a function to convert from image coords to rover coords
@@ -162,7 +169,8 @@ def perception_step(Rover):
     worldmap = Rover.worldmap
     scale = 25 
     
-   
+		
+		
     obstacle_x_world, obstacle_y_world = pix_to_world(obxpix,obypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
     rock_x_world, rock_y_world = pix_to_world(roxpix,roypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
     navigable_x_world, navigable_y_world = pix_to_world(xpix,ypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
@@ -187,5 +195,9 @@ def perception_step(Rover):
     # 8) Convert rover-centric pixel positions to polar coordinates
     Rover.nav_dists = dist
     Rover.nav_angles = angles
+    if len(angles) > 0:
+       Rover.dist_to_obstacle = calc_forward_dist(dist, angles)
+    
+    Rover.nav_area = thresh.sum()
     
     return Rover
