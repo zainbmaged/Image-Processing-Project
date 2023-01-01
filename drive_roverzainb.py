@@ -82,7 +82,7 @@ class RoverState():
         self.rock_dist = None
         self.ob_angle = None # rock angles
         self.ob_dist = None
-      
+        self.dist_to_obstacle = 0
 # Initialize our rover 
 Rover = RoverState()
 
