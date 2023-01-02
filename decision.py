@@ -72,7 +72,7 @@ def decision_step(Rover):
                     Rover.mode = 'stop'
             elif np.min(Rover.nav_dists) < Rover.stop_forward :
                    Rover.steer = np.clip(np.mean(Rover.nav_angles * 180/np.pi) + 14, -15, 15)
-        ## mode is rock            
+                  
          
         # If we're already in "stop" mode then make different decisions
         elif Rover.mode == 'stop':
