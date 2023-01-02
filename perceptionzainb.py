@@ -152,7 +152,7 @@ def perception_step(Rover):
    ##------------------------------------------------------------------------------------------------------------------(1)
    ##------------------------------------------------------------------------------------------------------------------(2)
         
-    Rover.nav_area = np.sum(Rover.vision_image[:,:,2])
+    Rover.nav_area = np.sum(thresh)
     Rover.ob_area = np.sum(obstacles)
    
     # 5) Convert map image pixel values to rover-centric coords
