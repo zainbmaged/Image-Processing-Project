@@ -9,8 +9,7 @@ def decision_step(Rover):
     # Here you're all set up with some basic functionality but you'll need to
     # improve on this decision tree to do a good job of navigating autonomously!
     
-    if(Rover.rock_angle is not None):
-       Rover.samples_insight=1
+   
     # Example:
     # Check if we have vision data to make decisions with
         # Check if there are rocks
