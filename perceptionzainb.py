@@ -167,3 +167,37 @@ def perception_step(Rover):
     
    ##------------------------------------------------------------------------------------------------------------------(2)
    ##----------------------------------------------
+ 
+   ##------------------------------------------------------------------------------------------------------------------(2)
+   ##------------------------------------------------------------------------------------------------------------------(4)
+    # 6) Convert rover-centric pixel values to world coordinates 
+    worldmap = Rover.worldmap
+    scale = 25 
+    
+   
+    obstacle_x_world, obstacle_y_world = pix_to_world(obxpix,obypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
+    rock_x_world, rock_y_world = pix_to_world(roxpix,roypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
+    navigable_x_world, navigable_y_world = pix_to_world(xpix,ypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
+     # 7) Update Rover worldmap (to be displayed on right side of screen)  
+    if ((Rover.pitch < 1 or Rover.pitch > 359) and (Rover.roll < 1 or Rover.roll > 359)):
+          Rover.worldmap[obstacle_y_world, obstacle_x_world, 0] = 200
+          Rover.worldmap[navigable_y_world, navigable_x_world, 0] = 0
+          Rover.worldmap[rock_y_world, rock_x_world, 1] = 200
+          Rover.worldmap[navigable_y_world, navigable_x_world, 2] = 200
+    ##------------------------------------------------------------------------------------------------------------------(4)
+        
+   
+    ## for finding rocks   
+    distrock, anglesro = to_polar_coords(roxpix, roypix)
+    ## obstacles angles
+    distob, anglesob = to_polar_coords(obxpix, obypix )
+    Rover.rock_angle = anglesro
+    Rover.rock_dist = distrock
+    Rover.ob_angle = anglesob
+    Rover.ob_dist = distob
+    
+    # 8) Convert rover-centric pixel positions to polar coordinates
+    Rover.nav_dists = dist
+    Rover.nav_angles = angles
+    
+    return Rover
