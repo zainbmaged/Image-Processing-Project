@@ -203,3 +203,4 @@ def perception_step(Rover):
     Rover.nav_angles = angles
     
     return Rover
+
