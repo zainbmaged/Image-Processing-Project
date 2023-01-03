@@ -119,6 +119,8 @@ def perspect_transform(img, src, dst):
 def perception_step(Rover):
     # Perform perception steps to update Rover()
     # TODO: 
+    if Rover.start_pos == None:      
+       Rover.start_pos = Rover.pos      #Records the starting point to return to later
     # NOTE: camera image is coming to you in Rover.img
     
  # 1) Define source and destination points for perspective transform
