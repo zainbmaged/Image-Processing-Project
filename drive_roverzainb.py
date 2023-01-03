@@ -78,6 +78,7 @@ class RoverState():
         self.picking_up = 0 # Will be set to telemetry value data["picking_up"]
         self.send_pickup = False # Set to True to trigger rock pickup
         
+        self.min_mapped = 80 #The minimum allowed mapping before return home
         self.start_pos = None # Records starting position for when we return
         self.rock_angle = None # rock angles
         self.rock_dist = None
