@@ -20,7 +20,8 @@ def decision_step(Rover):
                     Rover.brake=0
                     if nav_area>650 :
                         Rover.mode='forward'   
-       
+                    if nav_area<650 :
+                        Rover.mode='stop'
        
         # Check if there are rocks
     if Rover.rock_angle is not None and len(Rover.rock_angle) > 0:
