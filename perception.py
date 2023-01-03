@@ -34,6 +34,13 @@ def rock_tresh(img, yellow_thresh=(90, 90, 30)):
     rock = (img[:,:,0] > yellow_thresh[0]) & (img[:,:,1] > yellow_thresh[1]) & (img[:,:,2] < yellow_thresh[2])
     color_select[rock] = 1
     return color_select
+    
+    
+    # Apply the above functions in succession
+def calc_forward_dist(path_dists, path_angles):
+	abs_angles = np.absolute(path_angles / sum(path_angles))
+	idx = np.abs(abs_angles).argmin()
+	return path_dists[idx]
 ##------------------------------------------------------------------------------------------------------------------(1)
 ##------------------------------------------------------------------------------------------------------------------(2)
 # Define a function to convert from image coords to rover coords
@@ -112,6 +119,8 @@ def perspect_transform(img, src, dst):
 def perception_step(Rover):
     # Perform perception steps to update Rover()
     # TODO: 
+    if Rover.start_pos == None:      
+       Rover.start_pos = Rover.pos      #Records the starting point to return to later
     # NOTE: camera image is coming to you in Rover.img
     
  # 1) Define source and destination points for perspective transform
@@ -136,7 +145,8 @@ def perception_step(Rover):
     # 3) Apply color threshold to identify navigable terrain/obstacles/rock samples
     rocks = rock_tresh(warped)
     obstacles = obstacles_tresh(warped)   
- 
+    ##areas
+    
     # 4) Update Rover.vision_image (this will be displayed on left side of screen) our image is 200 x200 pixels
     Rover.vision_image[:,:,2] = thresh*200 #navigable train set to Blue
     Rover.vision_image[:,:,1] = rocks *200# rocks Set to GREEN
@@ -144,7 +154,8 @@ def perception_step(Rover):
    ##------------------------------------------------------------------------------------------------------------------(1)
    ##------------------------------------------------------------------------------------------------------------------(2)
         
-   
+    Rover.nav_area = np.sum(thresh)
+    Rover.ob_area = np.sum(obstacles)
    
     # 5) Convert map image pixel values to rover-centric coords
     # Calculate pixel values in rover-centric coords and distance/angle to all pixels
@@ -157,10 +168,13 @@ def perception_step(Rover):
    
     
    ##------------------------------------------------------------------------------------------------------------------(2)
+   ##----------------------------------------------
+ 
+   ##------------------------------------------------------------------------------------------------------------------(2)
    ##------------------------------------------------------------------------------------------------------------------(4)
     # 6) Convert rover-centric pixel values to world coordinates 
     worldmap = Rover.worldmap
-    scale = 25 
+    scale = 24 
     
    
     obstacle_x_world, obstacle_y_world = pix_to_world(obxpix,obypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
