@@ -9,7 +9,7 @@ def decision_step(Rover):
     # Here you're all set up with some basic functionality but you'll need to
     # improve on this decision tree to do a good job of navigating autonomously!
      # Once we are done we need to get back to the starting position
-    if Rover.total_time >= 750:
+    if Rover.total_time >= 700:
          print("GO TO START")
          dist_start = np.sqrt((Rover.pos[0] - Rover.start_pos[0])**2 + (Rover.pos[1] - Rover.start_pos[1])**2)
         # Make sure we are heading in right general direction
