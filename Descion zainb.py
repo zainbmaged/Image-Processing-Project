@@ -9,7 +9,26 @@ def decision_step(Rover):
     # Here you're all set up with some basic functionality but you'll need to
     # improve on this decision tree to do a good job of navigating autonomously!
     
+    # Returning home:
+    Rover.left_nav_angles = np.where(Rover.nav_angles * 180/np.pi > -10)[0]
+
+    # Once we are done we need to get back to the starting position
+    if Rover.samples_collected >= 5:
+        print("GO TO START")
+        dist_start = np.sqrt((Rover.pos[0] - Rover.start_pos[0])**2 + (Rover.pos[1] - Rover.start_pos[1])**2)
+        # Make sure we are heading in right general direction
+        # TODO
+        # If we are in 10 meters steer to starting point
    
+        # If we are in 3 meters just stop
+        if dist_start < 10.0 :
+            print("10m From start")
+            Rover.mode = 'stop'
+            Rover.throttle = 0
+            Rover.brake = Rover.brake_set
+            return Rover
+    print(Rover.samples_collected)
+    ########################################################################################
     # Example:
     # Check if we have vision data to make decisions with
     
