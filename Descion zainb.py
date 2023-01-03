@@ -13,7 +13,7 @@ def decision_step(Rover):
     Rover.left_nav_angles = np.where(Rover.nav_angles * 180/np.pi > -10)[0]
 
     # Once we are done we need to get back to the starting position
-    if Rover.samples_collected >= 5 and Rover.perc_mapped >= min_mapped:
+    if Rover.samples_collected >= 5 and Rover.perc_mapped >= 80%:
         print("GO TO START")
         dist_start = np.sqrt((Rover.pos[0] - Rover.start_pos[0])**2 + (Rover.pos[1] - Rover.start_pos[1])**2)
         # Make sure we are heading in right general direction
