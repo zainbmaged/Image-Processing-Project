@@ -18,7 +18,7 @@ def decision_step(Rover):
                     Rover.steer=-15
                     Rover.throttle=0
                     Rover.brake=0
-                    if nav_area>950 :
+                    if nav_area>650 :
                         Rover.mode='forward'   
        
        
