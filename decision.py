@@ -8,7 +8,22 @@ def decision_step(Rover):
     # Implement conditionals to decide what to do given perception data
     # Here you're all set up with some basic functionality but you'll need to
     # improve on this decision tree to do a good job of navigating autonomously!
-    
+     # Once we are done we need to get back to the starting position
+    if Rover.samples_collected >= 5:
+        print("GO TO START")
+        dist_start = np.sqrt((Rover.pos[0] - Rover.start_pos[0])**2 + (Rover.pos[1] - Rover.start_pos[1])**2)
+        # Make sure we are heading in right general direction
+        # TODO
+        # If we are in 10 meters steer to starting point
+   
+        # If we are in 3 meters just stop
+        if dist_start < 10.0 :
+            print("10m From start")
+            Rover.mode = 'stop'
+            Rover.throttle = 0
+            Rover.brake = Rover.brake_set
+            return Rover
+    print(Rover.samples_collected)
    
     # Example:
     # Check if we have vision data to make decisions with
@@ -17,12 +32,12 @@ def decision_step(Rover):
                         Rover.brake=10
                     Rover.steer=-15
                     Rover.throttle=0
-                    Rover.brake=0 
+                    Rover.brake=0
                     if nav_area>650 :
                         Rover.mode='forward'   
                     if nav_area<650 :
                         Rover.mode='stop'
-        
+       
         # Check if there are rocks
     if Rover.rock_angle is not None and len(Rover.rock_angle) > 0:
         Rover.mode = 'forward'
@@ -58,7 +73,7 @@ def decision_step(Rover):
                     Rover.steer =-15
                     Rover.mode = 'stop'
               
-                    
+               
                 # If mode is forward, navigable terrain looks good 
                 # and velocity is below max, then throttle 
                 if Rover.vel < Rover.max_vel :
@@ -82,7 +97,7 @@ def decision_step(Rover):
                     Rover.steer = 0
                     Rover.mode = 'stop'
             elif np.min(Rover.nav_dists) < Rover.stop_forward :
-                   Rover.steer = np.clip(np.mean(Rover.nav_angles * 180/np.pi) +14, -15, 15)
+                   Rover.steer = np.clip(np.mean(Rover.nav_angles * 180/np.pi) + 14, -15, 15)
                   
          
         # If we're already in "stop" mode then make different decisions
@@ -111,7 +126,7 @@ def decision_step(Rover):
                     # Release the brake
                     Rover.brake = 0
                     # Set steer to mean angle
-                    Rover.steer = np.clip(np.mean(Rover.nav_angles * 180/np.pi) -9, -15, 15)
+                    Rover.steer = np.clip(np.mean(Rover.nav_angles * 180/np.pi) + -9, -15, 15)
                     Rover.mode = 'forward'
        
                 
