@@ -11,6 +11,16 @@ def decision_step(Rover):
     
    
     # Example:
+    if len(Rover.ob_dist)==30 and Rover.rock_angle is None :
+                    if Rover.vel !=0:
+                        Rover.brake=10
+                    Rover.steer=-15
+                    Rover.throttle=0
+                    Rover.brake=0 
+                    if nav_area>650 :
+                        Rover.mode='forward'   
+                    if nav_area<650 :
+                        Rover.mode='stop'
     # Check if we have vision data to make decisions with
     
     if len(Rover.ob_dist)==30 and Rover.rock_angle is None :
@@ -52,8 +62,7 @@ def decision_step(Rover):
             # Check the extent of navigable terrain
             if len(Rover.nav_angles) >= Rover.stop_forward :
             ##check that rover is not looping around itself
-                if len(Rover.ob_dist)==30 and Rover.rock_angle is None :
-                   Rover.mode == 'stuck'
+                
                 if Rover.steer > 14.5 and Rover.vel > 2: 
                     Rover.brake = Rover.brake_set
                     Rover.steer = 15
@@ -131,16 +140,6 @@ def decision_step(Rover):
                     Rover.steer = np.clip(np.mean(Rover.nav_angles * 180/np.pi) -9.5, -15, 15)
                     Rover.mode = 'forward'
        
-        elif Rover.mode == 'stuck': 
-                    if Rover.vel !=0:
-                        Rover.brake=10
-                    Rover.steer=-15
-                    Rover.throttle=0
-                    Rover.brake=0 
-                    if nav_area>650 :
-                        Rover.mode='forward'   
-                    if nav_area<650 :
-                        Rover.mode='stop'
     # Just to make the rover do something 
     # even if no modifications have been made to the code
     else:
