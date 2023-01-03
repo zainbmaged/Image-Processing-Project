@@ -12,6 +12,16 @@ def decision_step(Rover):
    
     # Example:
     # Check if we have vision data to make decisions with
+    if len(Rover.ob_dist)==30 and Rover.rock_angle is None :
+                    if Rover.vel !=0:
+                        Rover.brake=10
+                    Rover.steer=-15
+                    Rover.throttle=0
+                    Rover.brake=0
+                    if nav_area>950 :
+                        Rover.mode='forward'   
+       
+       
         # Check if there are rocks
     if Rover.rock_angle is not None and len(Rover.rock_angle) > 0:
         Rover.mode = 'forward'
@@ -47,14 +57,7 @@ def decision_step(Rover):
                     Rover.steer =-15
                     Rover.mode = 'stop'
               
-                if len(Rover.ob_dist)==30:
-                    if Rover.vel !=0:
-                        Rover.brake=10
-                    Rover.steer=-15
-                    Rover.throttle=0
-                    Rover.brake=0
-                    if nav_area>650 :
-                        Rover.mode='forward'
+               
                 # If mode is forward, navigable terrain looks good 
                 # and velocity is below max, then throttle 
                 if Rover.vel < Rover.max_vel :
@@ -66,7 +69,7 @@ def decision_step(Rover):
                 # Set steering to average angle clipped to the range +/- 15 but always go left
                 
                 
-                Rover.steer = np.clip(np.mean(Rover.nav_angles * 180/np.pi) -10, -15, 15)
+                Rover.steer = np.clip(np.mean(Rover.nav_angles * 180/np.pi) -9, -15, 15)
            
            
             # If there's a lack of navigable terrain pixels then go to 'stop' mode
@@ -107,7 +110,7 @@ def decision_step(Rover):
                     # Release the brake
                     Rover.brake = 0
                     # Set steer to mean angle
-                    Rover.steer = np.clip(np.mean(Rover.nav_angles * 180/np.pi) + -10, -15, 15)
+                    Rover.steer = np.clip(np.mean(Rover.nav_angles * 180/np.pi) + -9, -15, 15)
                     Rover.mode = 'forward'
        
                 
