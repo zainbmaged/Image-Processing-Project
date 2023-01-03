@@ -174,7 +174,7 @@ def perception_step(Rover):
    ##------------------------------------------------------------------------------------------------------------------(4)
     # 6) Convert rover-centric pixel values to world coordinates 
     worldmap = Rover.worldmap
-    scale = 25 
+    scale = 24 
     
    
     obstacle_x_world, obstacle_y_world = pix_to_world(obxpix,obypix,Rover.pos[0],Rover.pos[1],Rover.yaw,worldmap.shape[0],scale)
