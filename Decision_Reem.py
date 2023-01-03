@@ -12,7 +12,7 @@ def decision_step(Rover):
    
     # Example:
     # Check if we have vision data to make decisions with
-    if len(Rover.ob_dist)==30 and Rover.rock_angle is None :
+    if (len(Rover.ob_dist)<=40 or len(Rover.ob_angle)is not None) and Rover.rock_angle is None :
                     if Rover.vel !=0:
                         Rover.brake=10
                     Rover.steer=-15
